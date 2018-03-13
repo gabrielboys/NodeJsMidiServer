@@ -1,12 +1,19 @@
-var express = require('Express');
+var express = require('express');
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
+
 var app = express();
 
-//Setup the public folder
-app.use(express.static('public'));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(upload.array());
 
-var routes = require('./controllers/routes.js');
+//Require the Router we defined in movies.js
+var movies = require('./api/routes.js');
 
-//both index.js and things.js should be in same directory
-app.use('/routes', routes);
+//Use the Router on the sub route /movies
+app.use('/movies', movies);
 
 app.listen(3000);
